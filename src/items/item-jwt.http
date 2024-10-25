@@ -1,0 +1,73 @@
+# items-jwt.http
+### auth login
+
+# @name login
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "username": "u1001",
+    "password": "changeit"
+}
+
+###
+@authToken = {{login.response.body.access_token}}
+
+@refreshToken = {{login.response.body.refresh_token}}
+
+### find all
+GET http://localhost:3000/items
+Authorization: Bearer {{authToken}}
+
+### find all with static jwt
+GET http://localhost:3000/items
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJ1MTAwNSIsInJvbGUiOiJVU0VSIiwic3ViIjoyLCJpYXQiOjE3Mjc3MDYyMTN9.cmO1_PEEpWm4GdxdWjj6csjZot4JJviMcPCYLGYWuys
+
+
+### find all with invalid jwt
+GET http://localhost:3000/items
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJ1MTAwNSIsInJvbGUiOiJVU0VSIiwic3ViIjoyLCJpYXQiOjE3Mjc3MDYyMzB9.FzCfEDmLwrjTI0ukEBl9vQ3NYpR5gv-AD-UBHOHdNUs
+
+### approve
+PATCH http://localhost:3000/items/5/PENDING
+Authorization: Bearer {{authToken}}
+
+###
+### Admin Zone
+###
+# @name loginAdmin
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "username": "a1001",
+    "password": "changeit"
+}
+
+###
+@authTokenAdmin = {{loginAdmin.response.body.access_token}}
+
+### Admin approve
+PATCH http://localhost:3000/items/6/APPROVED
+Authorization: Bearer {{authTokenAdmin}}
+
+
+
+###
+### Manager Zone
+###
+# @name loginManager
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "username": "m1001",
+    "password": "changeit"
+}
+
+###
+@authTokenManager = {{loginManager.response.body.access_token}}
+
+### Manager approve
+PATCH http://localhost:3000/items/5/REJECTED
+Authorization: Bearer {{authTokenManager}}

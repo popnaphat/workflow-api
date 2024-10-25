@@ -1,0 +1,42 @@
+### create
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "username": "u1002",
+    "password": "changeit",
+    "role": "USER"
+}
+
+#####
+GET http://localhost:3000/users
+Content-Type: application/json
+
+
+
+###
+### Admin Zone
+###
+### create
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "username": "a1001",
+    "password": "changeit",
+    "role": "ADMIN"
+}
+
+
+###
+### Manager Zone
+###
+### create
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "username": "m1001",
+    "password": "changeit",
+    "role": "MANAGER"
+}

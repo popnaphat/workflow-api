@@ -1,0 +1,52 @@
+version: '3.8'
+services:
+  api:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: nestjs-api
+    ports:
+      - '3000:3000'
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    # เปลี่ยนจาก command เดิม
+    command: ["npm", "run", "start:prod"]
+    networks:
+      - mynetwork
+
+  postgres:
+    image: postgres:16
+    container_name: postgres-db
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - mynetwork
+
+  # frontend:
+  #   build:
+  #     context: ../workflow-app  # ชี้ไปที่โฟลเดอร์ workflow-app
+  #     dockerfile: Dockerfile
+  #   container_name: angular-app
+  #   ports:
+  #     - '4200:4200'  # Map port 4200 of the container to port 4200 of the host
+  #   networks:
+  #     - mynetwork
+  #   restart: always
+
+volumes:
+  postgres-data:
+
+networks:
+  mynetwork:
+    driver: bridge
