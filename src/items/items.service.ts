@@ -68,7 +68,7 @@ export class ItemsService {
       .createQueryBuilder('item')
       .where('item.title LIKE :title', { title: `%${title}%` })
       .orderBy('item.updatedate', 'DESC')
-      .orderBy('item.id', 'DESC')  
+      .orderBy('item.id', 'ASC')  
       .skip(skip)
       .take(limit)
       .getMany();
