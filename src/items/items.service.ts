@@ -42,7 +42,6 @@ export class ItemsService {
         }
       });
     }
-
     // ถ้าระบุ limit ให้ทำ pagination ตามปกติ
     const skip = (page - 1) * limit;
     return this.itemRepository.find({
@@ -55,14 +54,18 @@ export class ItemsService {
     });
   }
 
-  findOne(id: number) {
-    return this.itemRepository.findOneBy({ id });
-  }
-
   findAllByTitle(
     title: string,
     { page, limit }: { page: number; limit: number },
   ) {
+    if(!limit){
+      return this.itemRepository
+      .createQueryBuilder('item')
+      .where('item.title LIKE :title', { title: `%${title}%` })
+      .orderBy('item.updatedate', 'DESC')
+      .orderBy('item.id', 'ASC')  
+      .getMany();
+    }
     const skip = (page - 1) * limit;
     return this.itemRepository
       .createQueryBuilder('item')
@@ -72,6 +75,10 @@ export class ItemsService {
       .skip(skip)
       .take(limit)
       .getMany();
+  }
+
+  findOne(id: number) {
+    return this.itemRepository.findOneBy({ id });
   }
 
   update(id: number, updateItemDto: UpdateItemDto) {

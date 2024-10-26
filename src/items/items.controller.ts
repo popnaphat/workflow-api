@@ -65,7 +65,7 @@ export class ItemsController {
     @Query('limit') limit?: string,
   ) {
     const pageNumber = parseInt(page) || 1;
-    const limitNumber = parseInt(limit) || 10;
+    const limitNumber = parseInt(limit);
     return this.itemsService.findAllByTitle(title, {
       page: pageNumber,
       limit: limitNumber,
