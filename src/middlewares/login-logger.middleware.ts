@@ -7,7 +7,7 @@ export class LoginLoggerMiddleware implements NestMiddleware {
   private logger = new Logger();
 
   use(req: any, res: any, next: () => void) {
-
+    //console.log(req) 
     const { ip, headers, body } = req;
     const userAgent = headers['user-agent'] || '';
     const username = body?.username
